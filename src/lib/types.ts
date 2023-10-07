@@ -17,7 +17,7 @@ declare module "discord.js" {
 }
 
 type EventCategory = "Unknown" | "Client" | "Guild" | "Interactions";
-type CommandCategory = "Unknown" | "Public" | "Moderator" | "Developer";
+type CommandCategory = "Unknown" | "Public" | "Moderation" | "Developer";
 
 export type Event<Event extends keyof (ClientEvents & RestEvents)> = {
 	name: Event;

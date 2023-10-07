@@ -78,6 +78,15 @@ export async function handleChatInputCommands(
 			ephemeral: true,
 		});
 
-	return await command.execute(interaction);
+	return await command.execute(interaction).catch(async (error) => {
+		console.error(`
+		Error: ${JSON.stringify(error)}\n
+		Info: ${JSON.stringify(command.data.toJSON())}
+		`);
+		return await interaction.reply({
+			content: "Something went wrong. Please try again later.",
+			ephemeral: true,
+		});
+	});
 }
 
