@@ -36,15 +36,15 @@ export const command: Command = {
 				ephemeral: true,
 			});
 
-		if (!member.bannable)
-			return await interaction.reply({
-				content: "The user you selected has permissions above us.",
-				ephemeral: true,
-			});
-
 		if (interaction.user.id === target.id)
 			return await interaction.reply({
 				content: "You cannot ban yourself.",
+				ephemeral: true,
+			});
+
+		if (!member.bannable)
+			return await interaction.reply({
+				content: "The user you selected has permissions above us.",
 				ephemeral: true,
 			});
 
