@@ -11,7 +11,7 @@ import type {
 
 declare module "discord.js" {
 	export interface Client {
-		events: Collection<string, Awaited<Event>>;
+		events: Collection<string, Event>;
 		commands: Collection<string, Command>;
 	}
 }
@@ -20,7 +20,7 @@ export type EventCategory = "Unknown" | "Client" | "Guild" | "Interactions";
 export type CommandCategory = "Unknown" | "Public" | "Moderation" | "Developer";
 
 export type Event = ReturnType<typeof event>;
-export const event = async <E extends keyof (ClientEvents & RestEvents)>(
+export const event = <E extends keyof (ClientEvents & RestEvents)>(
 	name: E,
 	displayName: string,
 	category: EventCategory,

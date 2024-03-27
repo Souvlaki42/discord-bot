@@ -19,8 +19,7 @@ export async function loadEvents(client: Client) {
 
 	for (const file of files) {
 		try {
-			const { default: promise }: { default: Event } = await import(file);
-			const event = await promise;
+			const { default: event }: { default: Event } = await import(file);
 
 			if (isRestEvent(event.name, event.rest) && event.once)
 				client.rest.once(event.name, event.execute);
