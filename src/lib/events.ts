@@ -1,8 +1,13 @@
-import { customTable } from "@lib/templates";
-import { Event, TableElement } from "@lib/types";
 import { Client, ClientEvents, Collection, RestEvents } from "discord.js";
+import type { Event, TableElement } from "@lib/types";
+import { table } from "@lib/wrappers";
 import { glob } from "glob";
 import path from "path";
+
+const isRestEvent = (
+	name: keyof ClientEvents | keyof RestEvents,
+	rest: boolean
+): name is keyof RestEvents => rest;
 
 export async function loadEvents(client: Client) {
 	const tableEvents: TableElement[] = [];
@@ -12,24 +17,19 @@ export async function loadEvents(client: Client) {
 
 	const files = await glob(path.join(process.cwd(), "src/events", "**/*.ts"));
 
-	for await (const file of files) {
+	for (const file of files) {
 		try {
-			let event;
-			const {
-				event: importedEvent,
-			}: { event: Event<keyof ClientEvents | keyof RestEvents> } = await import(
-				file
-			);
+			const { default: promise }: { default: Event } = await import(file);
+			const event = await promise;
 
-			if (importedEvent.rest) {
-				event = importedEvent as Event<keyof RestEvents>;
-				if (event.once) client.rest.once(event.name, event.execute);
-				else client.rest.on(event.name, event.execute);
-			} else {
-				event = importedEvent as Event<keyof ClientEvents>;
-				if (event.once) client.once(event.name, event.execute);
-				else client.on(event.name, event.execute);
-			}
+			if (isRestEvent(event.name, event.rest) && event.once)
+				client.rest.once(event.name, event.execute);
+			else if (isRestEvent(event.name, event.rest) && !event.once)
+				client.rest.on(event.name, event.execute);
+			else if (!isRestEvent(event.name, event.rest) && event.once)
+				client.once(event.name, event.execute);
+			else if (!isRestEvent(event.name, event.rest) && !event.once)
+				client.on(event.name, event.execute);
 
 			client.events.set(event.name, event);
 
@@ -48,6 +48,5 @@ export async function loadEvents(client: Client) {
 		}
 	}
 
-	customTable({ text: "Events", dashNumber: 16 }, tableEvents);
+	table({ text: "Events", dashNumber: 16 }, tableEvents);
 }
-

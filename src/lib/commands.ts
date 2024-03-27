@@ -1,5 +1,5 @@
-import { customTable } from "@lib/templates";
-import { Command, TableElement } from "@lib/types";
+import { table } from "@lib/wrappers";
+import type { Command, TableElement } from "@lib/types";
 import {
 	ButtonInteraction,
 	CacheType,
@@ -23,7 +23,7 @@ export async function loadCommands(client: Client) {
 
 	for await (const file of files) {
 		try {
-			const { command }: { command: Command } = await import(file);
+			const { default: command }: { default: Command } = await import(file);
 
 			client.commands.set(command.data.name, command);
 
@@ -45,7 +45,7 @@ export async function loadCommands(client: Client) {
 		client.commands.map((command) => command.data.toJSON())
 	);
 
-	customTable({ text: "Commands", dashNumber: 15 }, tableCommands);
+	table({ text: "Commands", dashNumber: 15 }, tableCommands);
 }
 
 export async function handleButtonInteractions(
@@ -89,4 +89,3 @@ export async function handleChatInputCommands(
 		});
 	});
 }
-

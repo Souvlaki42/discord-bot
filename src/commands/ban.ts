@@ -1,12 +1,12 @@
+import type { Command } from "@/lib/types";
 import {
 	Colors,
-	Command,
 	EmbedBuilder,
 	PermissionFlagsBits,
 	SlashCommandBuilder,
-} from "@/lib/types";
+} from "discord.js";
 
-export const command: Command = {
+export default {
 	data: new SlashCommandBuilder()
 		.setName("ban")
 		.setDescription("Bans a member from the server.")
@@ -70,5 +70,4 @@ export const command: Command = {
 
 		return await interaction.reply({ embeds: [embed] });
 	},
-};
-
+} satisfies Command;

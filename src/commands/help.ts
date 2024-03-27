@@ -1,8 +1,8 @@
-import { customEmbed } from "@lib/templates";
-import { Command } from "@lib/types";
+import { embed } from "@/lib/wrappers";
+import type { Command } from "@lib/types";
 import { APIEmbedField, Colors, SlashCommandBuilder } from "discord.js";
 
-export const command: Command = {
+export default {
 	data: new SlashCommandBuilder()
 		.setName("help")
 		.setDescription("Displays a list of all available commands."),
@@ -22,9 +22,8 @@ export const command: Command = {
 		for (const [key, value] of categories.entries())
 			fields.push({ name: `__*${key}*__`, value: value.join("\n") });
 
-		const embed = customEmbed("Help", Colors.Aqua, interaction);
+		const outputEmbed = embed("Help", Colors.Aqua, interaction);
 
-		return await interaction.reply({ embeds: [embed.setFields(fields)] });
+		return await interaction.reply({ embeds: [outputEmbed.setFields(fields)] });
 	},
-};
-
+} satisfies Command;

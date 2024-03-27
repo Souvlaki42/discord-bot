@@ -1,12 +1,16 @@
-import { TableElement } from "@lib/types";
+import type { TableElement } from "@lib/types";
 import {
 	CacheType,
 	ChatInputCommandInteraction,
 	ColorResolvable,
 	EmbedBuilder,
+	Channel,
+	Client,
+	Interaction,
+	Role,
 } from "discord.js";
 
-export function customEmbed(
+export function embed(
 	title: string,
 	color: ColorResolvable,
 	interaction: ChatInputCommandInteraction<CacheType>
@@ -18,7 +22,7 @@ export function customEmbed(
 		.setTimestamp(interaction.createdTimestamp);
 }
 
-export function customTable(
+export function table(
 	title: { text: string; dashNumber: number },
 	elements: TableElement[]
 ): void {
@@ -48,3 +52,20 @@ export function customTable(
 	console.log("-".repeat(wholeLineDashNumber) + "\n");
 }
 
+export async function assertChannel<T extends Channel>(
+	channelId: string,
+	client: Client<boolean>
+): Promise<T> {
+	const channel = await client.channels.fetch(channelId);
+	if (!channel) throw new Error(`Channel with ${channelId} doesn't exist!`);
+	else return channel as T;
+}
+
+export async function assertRole<T extends Role>(
+	roleId: string,
+	interaction: Interaction<CacheType>
+): Promise<T> {
+	const role = await interaction.guild?.roles.fetch(roleId);
+	if (!role) throw new Error(`Role with ${roleId} doesn't exist!`);
+	else return role as T;
+}

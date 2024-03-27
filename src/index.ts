@@ -1,22 +1,30 @@
 import { env } from "@lib/env";
 import { loadEvents } from "@lib/events";
-import { Client, GatewayIntentBits, Partials } from "discord.js";
+import {
+	Client,
+	GatewayIntentBits,
+	Partials,
+	type ClientOptions,
+} from "discord.js";
 import { loadCommands } from "./lib/commands";
 
-const { GuildMember, ThreadMember, Channel, Message } = Partials;
-const { Guilds, GuildMembers, GuildMessages, MessageContent, GuildPresences } =
-	GatewayIntentBits;
-
-export const client = new Client({
+const clientOptions = {
 	intents: [
-		Guilds,
-		GuildMembers,
-		GuildMessages,
-		MessageContent,
-		GuildPresences,
+		GatewayIntentBits.Guilds,
+		GatewayIntentBits.GuildMembers,
+		GatewayIntentBits.GuildMessages,
+		GatewayIntentBits.MessageContent,
+		GatewayIntentBits.GuildPresences,
 	],
-	partials: [GuildMember, ThreadMember, Channel, Message],
-});
+	partials: [
+		Partials.GuildMember,
+		Partials.ThreadMember,
+		Partials.Channel,
+		Partials.Message,
+	],
+} satisfies ClientOptions;
+
+export const client = new Client(clientOptions);
 
 process.on("SIGINT", () => {
 	console.log("Bot's execution was terminated gracefully.");
