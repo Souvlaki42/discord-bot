@@ -7,6 +7,7 @@ import {
 	RestEvents,
 	SlashCommandBuilder,
 } from "discord.js";
+import "@total-typescript/ts-reset";
 
 export * from "discord.js";
 declare module "discord.js" {
@@ -48,4 +49,3 @@ export type TableElement = {
 	category: EventCategory | CommandCategory;
 	status: string;
 };
-
