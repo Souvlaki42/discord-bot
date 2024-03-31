@@ -4,10 +4,6 @@ import {
 	ChatInputCommandInteraction,
 	ColorResolvable,
 	EmbedBuilder,
-	Channel,
-	Client,
-	Interaction,
-	Role,
 } from "discord.js";
 
 export function embed(
@@ -50,22 +46,4 @@ export function table(
 		});
 	}
 	console.log("-".repeat(wholeLineDashNumber) + "\n");
-}
-
-export async function assertChannel<T extends Channel>(
-	channelId: string,
-	client: Client<boolean>
-): Promise<T> {
-	const channel = await client.channels.fetch(channelId);
-	if (!channel) throw new Error(`Channel with ${channelId} doesn't exist!`);
-	else return channel as T;
-}
-
-export async function assertRole<T extends Role>(
-	roleId: string,
-	interaction: Interaction<CacheType>
-): Promise<T> {
-	const role = await interaction.guild?.roles.fetch(roleId);
-	if (!role) throw new Error(`Role with ${roleId} doesn't exist!`);
-	else return role as T;
 }

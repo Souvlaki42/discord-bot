@@ -20,20 +20,21 @@ export async function loadEvents(client: Client) {
 	for (const file of files) {
 		try {
 			const { default: event }: { default: Event } = await import(file);
+			const rest = event.rest ?? false;
 
-			if (isRestEvent(event.name, event.rest) && event.once)
+			if (isRestEvent(event.name, rest) && event.once)
 				client.rest.once(event.name, event.execute);
-			else if (isRestEvent(event.name, event.rest) && !event.once)
+			else if (isRestEvent(event.name, rest) && !event.once)
 				client.rest.on(event.name, event.execute);
-			else if (!isRestEvent(event.name, event.rest) && event.once)
+			else if (!isRestEvent(event.name, rest) && event.once)
 				client.once(event.name, event.execute);
-			else if (!isRestEvent(event.name, event.rest) && !event.once)
+			else if (!isRestEvent(event.name, rest) && !event.once)
 				client.on(event.name, event.execute);
 
 			client.events.set(event.name, event);
 
 			tableEvents.push({
-				name: event.displayName,
+				name: event.displayName ?? file.split("/").at(-1),
 				category: event.category,
 				status: "✅",
 			});

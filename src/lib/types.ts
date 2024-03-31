@@ -1,5 +1,5 @@
 import "@total-typescript/ts-reset";
-import type {
+import {
 	CacheType,
 	ChatInputCommandInteraction,
 	ClientEvents,
@@ -20,24 +20,27 @@ export type EventCategory = "Unknown" | "Client" | "Guild" | "Interactions";
 export type CommandCategory = "Unknown" | "Public" | "Moderation" | "Developer";
 
 export type Event = ReturnType<typeof event>;
-export const event = <E extends keyof (ClientEvents & RestEvents)>(
-	name: E,
-	displayName: string,
-	category: EventCategory,
-	once: boolean,
-	rest: E extends keyof RestEvents
-		? true
-		: E extends keyof ClientEvents
-		? false
-		: never,
+export const event = <N extends keyof (ClientEvents & RestEvents)>({
+	name,
+	displayName,
+	category,
+	once = false,
+	rest,
+	execute,
+}: {
+	name: N;
+	displayName?: string;
+	category: EventCategory;
+	once?: boolean;
+	rest?: N extends keyof RestEvents ? true : false;
 	execute: (
-		...args: E extends keyof ClientEvents
-			? ClientEvents[E]
-			: E extends keyof RestEvents
-			? RestEvents[E]
+		...args: N extends keyof RestEvents
+			? RestEvents[N]
+			: N extends keyof ClientEvents
+			? ClientEvents[N]
 			: never
-	) => Promise<void>
-) => {
+	) => Promise<void>;
+}) => {
 	return {
 		name,
 		displayName,
@@ -48,13 +51,26 @@ export const event = <E extends keyof (ClientEvents & RestEvents)>(
 	};
 };
 
-export type Command = {
-	data: SlashCommandBuilder;
-	displayName: string;
+export type Command = ReturnType<typeof command>;
+export const command = ({
+	builder,
+	displayName,
+	category,
+	execute,
+}: {
+	builder: SlashCommandBuilder;
+	displayName?: string;
 	category: CommandCategory;
 	execute: (
-		Interaction: ChatInputCommandInteraction<CacheType>
+		interaction: ChatInputCommandInteraction<CacheType>
 	) => Promise<InteractionResponse<boolean>>;
+}) => {
+	return {
+		builder,
+		displayName,
+		category,
+		execute,
+	};
 };
 
 export type TableElement = {

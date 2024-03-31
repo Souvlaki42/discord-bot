@@ -1,4 +1,4 @@
-import type { Command } from "@/lib/types";
+import { command } from "@/lib/types";
 import {
 	Colors,
 	EmbedBuilder,
@@ -6,8 +6,8 @@ import {
 	SlashCommandBuilder,
 } from "discord.js";
 
-export default {
-	data: new SlashCommandBuilder()
+export default command({
+	builder: new SlashCommandBuilder()
 		.setName("kick")
 		.setDescription("Kicks a member from the server.")
 		.addUserOption((option) =>
@@ -70,4 +70,4 @@ export default {
 
 		return await interaction.reply({ embeds: [embed] });
 	},
-} satisfies Command;
+});

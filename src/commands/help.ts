@@ -1,9 +1,9 @@
+import { command } from "@/lib/types";
 import { embed } from "@/lib/wrappers";
-import type { Command } from "@lib/types";
 import { APIEmbedField, Colors, SlashCommandBuilder } from "discord.js";
 
-export default {
-	data: new SlashCommandBuilder()
+export default command({
+	builder: new SlashCommandBuilder()
 		.setName("help")
 		.setDescription("Displays a list of all available commands."),
 	displayName: "Help",
@@ -13,7 +13,7 @@ export default {
 		const categories = new Map<string, string[]>();
 
 		interaction.client.commands.forEach((command) => {
-			const result = `**/${command?.data.name}** - ${command?.data.description}`;
+			const result = `**/${command?.builder.name}** - ${command?.builder.description}`;
 			const commands = categories.get(command.category);
 			if (!commands) categories.set(command.category, [result]);
 			else categories.set(command.category, [...commands, result]);
@@ -26,4 +26,4 @@ export default {
 
 		return await interaction.reply({ embeds: [outputEmbed.setFields(fields)] });
 	},
-} satisfies Command;
+});

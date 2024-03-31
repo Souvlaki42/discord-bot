@@ -1,8 +1,8 @@
-import type { Command } from "@lib/types";
+import { command } from "@/lib/types";
 import { SlashCommandBuilder } from "discord.js";
 
-export default {
-	data: new SlashCommandBuilder()
+export default command({
+	builder: new SlashCommandBuilder()
 		.setName("ping")
 		.setDescription("Responds with latencies."),
 	displayName: "Ping",
@@ -15,4 +15,4 @@ export default {
 			ephemeral: true,
 		});
 	},
-} satisfies Command;
+});

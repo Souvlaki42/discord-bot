@@ -21,11 +21,11 @@ export async function loadCommands(client: Client) {
 
 	const files = await glob(path.join(process.cwd(), "src/commands", "**/*.ts"));
 
-	for await (const file of files) {
+	for (const file of files) {
 		try {
 			const { default: command }: { default: Command } = await import(file);
 
-			client.commands.set(command.data.name, command);
+			client.commands.set(command.builder.name, command);
 
 			tableCommands.push({
 				name: command.displayName,
@@ -42,7 +42,7 @@ export async function loadCommands(client: Client) {
 	}
 
 	client.application?.commands.set(
-		client.commands.map((command) => command.data.toJSON())
+		client.commands.map((command) => command.builder.toJSON())
 	);
 
 	table({ text: "Commands", dashNumber: 15 }, tableCommands);
@@ -81,7 +81,7 @@ export async function handleChatInputCommands(
 	return await command.execute(interaction).catch(async (error) => {
 		console.error(`
 		Error: ${JSON.stringify(error)}\n
-		Info: ${JSON.stringify(command.data.toJSON())}
+		Info: ${JSON.stringify(command.builder.toJSON())}
 		`);
 		return await interaction.reply({
 			content: "Something went wrong. Please try again later.",
