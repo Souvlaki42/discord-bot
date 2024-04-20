@@ -1,14 +1,10 @@
 import { env } from "@lib/env";
 import { loadEvents } from "@lib/events";
-import {
-	Client,
-	GatewayIntentBits,
-	Partials,
-	type ClientOptions,
-} from "discord.js";
+import { Client, GatewayIntentBits, Partials } from "discord.js";
 import { loadCommands } from "./lib/commands";
+import { logger } from "./lib/wrappers";
 
-const clientOptions = {
+export const client = new Client({
 	intents: [
 		GatewayIntentBits.Guilds,
 		GatewayIntentBits.GuildMembers,
@@ -22,13 +18,11 @@ const clientOptions = {
 		Partials.Channel,
 		Partials.Message,
 	],
-} satisfies ClientOptions;
-
-export const client = new Client(clientOptions);
+});
 
 process.on("SIGINT", () => {
-	console.log("Bot's execution was terminated gracefully.");
-	process.exit();
+	logger.info("Bot's execution was terminated gracefully.");
+	process.exit(0);
 });
 
 try {
@@ -36,9 +30,7 @@ try {
 	await loadEvents(client);
 	await loadCommands(client);
 } catch (error) {
-	if (error instanceof Error) {
-		const { name: type, message, stack } = error;
-		console.error(JSON.stringify({ type, message, stack }));
-	} else console.error("Unknown error occurred!");
-	process.exit();
+	if (error instanceof Error) logger.error(error);
+	else logger.error("Something unexpected happened.");
+	process.exit(1);
 }

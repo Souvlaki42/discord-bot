@@ -15,6 +15,6 @@ export default event({
 			await handleChatInputCommands(interaction);
 		else if (interaction.isButton())
 			await handleButtonInteractions(interaction);
-		else return;
+		else await interaction.channel?.send("This interaction is not available.");
 	},
 });

@@ -9,7 +9,8 @@
   "type": "module",
   "dependencies": {
     "discord.js": "^14.14.1",
-    "glob": "^10.3.12",
+    "mongoose": "^8.3.2",
+    "pino": "^8.20.0",
     "zod": "^3.22.4"
   },
   "devDependencies": {

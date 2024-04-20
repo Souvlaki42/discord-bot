@@ -5,17 +5,23 @@ import {
 	ColorResolvable,
 	EmbedBuilder,
 } from "discord.js";
+import pino from "pino";
+
+export const logger = pino();
 
 export function embed(
 	title: string,
-	color: ColorResolvable,
-	interaction: ChatInputCommandInteraction<CacheType>
+	description: string,
+	interaction?: ChatInputCommandInteraction<CacheType>,
+	color: ColorResolvable = "Random",
+	footer?: string
 ) {
 	return new EmbedBuilder()
 		.setTitle(title)
+		.setDescription(description)
 		.setColor(color)
-		.setFooter({ text: title })
-		.setTimestamp(interaction.createdTimestamp);
+		.setFooter({ text: footer ?? title })
+		.setTimestamp(interaction?.createdTimestamp);
 }
 
 export function table(

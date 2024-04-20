@@ -8,10 +8,10 @@ export default command({
 	displayName: "Ping",
 	category: "Developer",
 	async execute(interaction) {
+		const latency = Date.now() - interaction.createdTimestamp;
+		const apiLatency = interaction.client.ws.ping;
 		return await interaction.reply({
-			content: `🏓 Latency is ${
-				Date.now() - interaction.createdTimestamp
-			}ms. API Latency is ${interaction.client.ws.ping}ms`,
+			content: `🏓 Latency is ${latency}ms. API Latency is ${apiLatency}ms`,
 			ephemeral: true,
 		});
 	},

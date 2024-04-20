@@ -1,13 +1,11 @@
 import { Client, ClientEvents, Collection, RestEvents } from "discord.js";
 import type { Event, TableElement } from "@lib/types";
-import { table } from "@lib/wrappers";
-import { glob } from "glob";
-import path from "path";
+import { logger, table } from "@lib/wrappers";
 
 const isRestEvent = (
-	name: keyof ClientEvents | keyof RestEvents,
+	_: keyof ClientEvents | keyof RestEvents,
 	rest: boolean
-): name is keyof RestEvents => rest;
+): _ is keyof RestEvents => rest;
 
 export async function loadEvents(client: Client) {
 	const tableEvents: TableElement[] = [];
@@ -15,9 +13,9 @@ export async function loadEvents(client: Client) {
 	if (!client.events) client.events = new Collection();
 	client.events.clear();
 
-	const files = await glob(path.join(process.cwd(), "src/events", "**/*.ts"));
+	const glob = new Bun.Glob("**/*.ts");
 
-	for (const file of files) {
+	for await (const file of glob.scan({ cwd: "./src/events", absolute: true })) {
 		try {
 			const { default: event }: { default: Event } = await import(file);
 			const rest = event.rest ?? false;
@@ -44,7 +42,7 @@ export async function loadEvents(client: Client) {
 				category: "Unknown",
 				status: "🛑",
 			});
-			console.error(err);
+			logger.error(err);
 		}
 	}
 

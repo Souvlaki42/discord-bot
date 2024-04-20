@@ -22,8 +22,14 @@ export default command({
 		for (const [key, value] of categories.entries())
 			fields.push({ name: `__*${key}*__`, value: value.join("\n") });
 
-		const outputEmbed = embed("Help", Colors.Aqua, interaction);
+		const outputEmbed = embed(
+			"Help",
+			"Check a list of all available commands.",
+			interaction,
+			Colors.Aqua
+		);
+		outputEmbed.setFields(fields);
 
-		return await interaction.reply({ embeds: [outputEmbed.setFields(fields)] });
+		return await interaction.reply({ embeds: [outputEmbed] });
 	},
 });

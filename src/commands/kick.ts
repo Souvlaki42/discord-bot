@@ -1,10 +1,6 @@
 import { command } from "@/lib/types";
-import {
-	Colors,
-	EmbedBuilder,
-	PermissionFlagsBits,
-	SlashCommandBuilder,
-} from "discord.js";
+import { embed } from "@/lib/wrappers";
+import { Colors, PermissionFlagsBits, SlashCommandBuilder } from "discord.js";
 
 export default command({
 	builder: new SlashCommandBuilder()
@@ -48,26 +44,24 @@ export default command({
 				ephemeral: true,
 			});
 
-		const dmEmbed = new EmbedBuilder()
-			.setColor(Colors.Blue)
-			.setDescription(
-				`:white_check_mark: You have been kicked from **${interaction.guild?.name}** | ${reason}.`
-			)
-			.setFooter({ text: "Kick" })
-			.setTimestamp();
+		const dmEmbed = embed(
+			"Kick",
+			`:white_check_mark: You have been kicked from **${interaction.guild?.name}** | ${reason}.`,
+			interaction,
+			Colors.Blue
+		);
 
-		const embed = new EmbedBuilder()
-			.setColor(Colors.Blue)
-			.setDescription(
-				`:white_check_mark: ${target.tag} has been **kicked** | ${reason}.`
-			)
-			.setFooter({ text: "Kick" })
-			.setTimestamp();
+		const channelEmbed = embed(
+			"Kick",
+			`:white_check_mark: ${target.tag} has been **kicked** | ${reason}.`,
+			interaction,
+			Colors.Blue
+		);
 
 		await member.send({ embeds: [dmEmbed] });
 
 		await member.kick(reason);
 
-		return await interaction.reply({ embeds: [embed] });
+		return await interaction.reply({ embeds: [channelEmbed] });
 	},
 });

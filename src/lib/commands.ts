@@ -1,4 +1,4 @@
-import { table } from "@lib/wrappers";
+import { logger, table } from "@lib/wrappers";
 import type { Command, TableElement } from "@lib/types";
 import {
 	ButtonInteraction,
@@ -7,8 +7,6 @@ import {
 	Client,
 	Collection,
 } from "discord.js";
-import { glob } from "glob";
-import path from "path";
 
 export async function loadCommands(client: Client) {
 	const tableCommands: TableElement[] = [];
@@ -19,9 +17,12 @@ export async function loadCommands(client: Client) {
 	if (!client.application) return;
 	client.application.commands.cache.clear();
 
-	const files = await glob(path.join(process.cwd(), "src/commands", "**/*.ts"));
+	const glob = new Bun.Glob("**/*.ts");
 
-	for (const file of files) {
+	for await (const file of glob.scan({
+		cwd: "./src/commands",
+		absolute: true,
+	})) {
 		try {
 			const { default: command }: { default: Command } = await import(file);
 
@@ -79,7 +80,7 @@ export async function handleChatInputCommands(
 		});
 
 	return await command.execute(interaction).catch(async (error) => {
-		console.error(`
+		logger.error(`
 		Error: ${JSON.stringify(error)}\n
 		Info: ${JSON.stringify(command.builder.toJSON())}
 		`);

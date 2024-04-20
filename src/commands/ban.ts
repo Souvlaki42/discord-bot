@@ -1,4 +1,5 @@
 import { command } from "@/lib/types";
+import { embed } from "@/lib/wrappers";
 import {
 	Colors,
 	EmbedBuilder,
@@ -48,26 +49,24 @@ export default command({
 				ephemeral: true,
 			});
 
-		const dmEmbed = new EmbedBuilder()
-			.setColor(Colors.Blue)
-			.setDescription(
-				`:white_check_mark: You have been banned from **${interaction.guild?.name}** | ${reason}.`
-			)
-			.setFooter({ text: "Ban" })
-			.setTimestamp();
+		const dmEmbed = embed(
+			"Ban",
+			`:white_check_mark: You have been banned from **${interaction.guild?.name}** | ${reason}.`,
+			interaction,
+			Colors.Red
+		);
 
-		const embed = new EmbedBuilder()
-			.setColor(Colors.Blue)
-			.setDescription(
-				`:white_check_mark: ${target.tag} has been **banned** | ${reason}.`
-			)
-			.setFooter({ text: "Ban" })
-			.setTimestamp();
+		const channelEmbed = embed(
+			"Ban",
+			`:white_check_mark: ${target.tag} has been **banned** | ${reason}.`,
+			interaction,
+			Colors.Red
+		);
 
 		await target.send({ embeds: [dmEmbed] });
 
 		await interaction.guild?.bans.create(target.id, { reason });
 
-		return await interaction.reply({ embeds: [embed] });
+		return await interaction.reply({ embeds: [channelEmbed] });
 	},
 });
