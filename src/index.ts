@@ -1,8 +1,8 @@
-import { env } from "@lib/env";
+import { env } from "@/lib/validations";
 import { loadEvents } from "@lib/events";
 import { Client, GatewayIntentBits, Partials } from "discord.js";
-import { loadCommands } from "./lib/commands";
-import { logger } from "./lib/wrappers";
+import { loadCommands } from "@lib/commands";
+import { logger } from "@lib/wrappers";
 
 export const client = new Client({
 	intents: [
@@ -30,7 +30,6 @@ try {
 	await loadEvents(client);
 	await loadCommands(client);
 } catch (error) {
-	if (error instanceof Error) logger.error(error);
-	else logger.error("Something unexpected happened.");
+	logger.error(error);
 	process.exit(1);
 }

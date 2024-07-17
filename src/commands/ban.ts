@@ -1,11 +1,6 @@
-import { command } from "@/lib/types";
+import { command } from "@/lib/wrappers";
 import { embed } from "@/lib/wrappers";
-import {
-	Colors,
-	EmbedBuilder,
-	PermissionFlagsBits,
-	SlashCommandBuilder,
-} from "discord.js";
+import { Colors, PermissionFlagsBits, SlashCommandBuilder } from "discord.js";
 
 export default command({
 	builder: new SlashCommandBuilder()

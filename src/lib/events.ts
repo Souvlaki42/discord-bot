@@ -7,6 +7,11 @@ const isRestEvent = (
 	rest: boolean
 ): _ is keyof RestEvents => rest;
 
+const isClientEvent = (
+	_: keyof ClientEvents | keyof RestEvents,
+	rest: boolean
+): _ is keyof ClientEvents => rest;
+
 export async function loadEvents(client: Client) {
 	const tableEvents: TableElement[] = [];
 
@@ -24,9 +29,9 @@ export async function loadEvents(client: Client) {
 				client.rest.once(event.name, event.execute);
 			else if (isRestEvent(event.name, rest) && !event.once)
 				client.rest.on(event.name, event.execute);
-			else if (!isRestEvent(event.name, rest) && event.once)
+			else if (isClientEvent(event.name, rest) && event.once)
 				client.once(event.name, event.execute);
-			else if (!isRestEvent(event.name, rest) && !event.once)
+			else if (isClientEvent(event.name, rest) && !event.once)
 				client.on(event.name, event.execute);
 
 			client.events.set(event.name, event);
@@ -46,5 +51,5 @@ export async function loadEvents(client: Client) {
 		}
 	}
 
-	table({ text: "Events", dashNumber: 16 }, tableEvents);
+	table(tableEvents, "Events", 16);
 }

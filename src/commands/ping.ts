@@ -1,4 +1,4 @@
-import { command } from "@/lib/types";
+import { command } from "@/lib/wrappers";
 import { SlashCommandBuilder } from "discord.js";
 
 export default command({

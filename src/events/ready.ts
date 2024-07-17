@@ -1,4 +1,4 @@
-import { event } from "@/lib/types";
+import { event } from "@/lib/wrappers";
 
 export default event({
 	name: "ready",

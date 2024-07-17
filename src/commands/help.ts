@@ -1,4 +1,4 @@
-import { command } from "@/lib/types";
+import { command } from "@/lib/wrappers";
 import { embed } from "@/lib/wrappers";
 import { APIEmbedField, Colors, SlashCommandBuilder } from "discord.js";
 

@@ -46,7 +46,7 @@ export async function loadCommands(client: Client) {
 		client.commands.map((command) => command.builder.toJSON())
 	);
 
-	table({ text: "Commands", dashNumber: 15 }, tableCommands);
+	table(tableCommands, "Commands", 15);
 }
 
 export async function handleButtonInteractions(

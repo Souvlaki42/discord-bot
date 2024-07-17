@@ -1,4 +1,4 @@
-import { event } from "@/lib/types";
+import { event } from "@/lib/wrappers";
 import {
 	handleButtonInteractions,
 	handleChatInputCommands,

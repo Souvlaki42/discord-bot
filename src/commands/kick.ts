@@ -1,4 +1,4 @@
-import { command } from "@/lib/types";
+import { command } from "@/lib/wrappers";
 import { embed } from "@/lib/wrappers";
 import { Colors, PermissionFlagsBits, SlashCommandBuilder } from "discord.js";
 
