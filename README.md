@@ -1,20 +1,23 @@
 # Discord Bot
 
-This is my type safe discord bot template built using Discord.js v14, Typescript and Bun.js
+A type-safe discord bot template built using Discord.js v14, Typescript and Bun.js
 
 ## How to use it
 
-1. Clone the repo: `git clone https://github.com/Souvlaki42/discord-bot.git`.
-2. Install the dependencies: `bun install`.
-3. Provide `.env` with a **Token** key and a **Database** key.
+1. Clone the repo
+2. Install the dependencies: `bun install`
+3. Copy `.env.example` to `.env.local` and fill it.
 4. Run it (or host it somewhere): `bun dev` or `bun start`.
 
-(PS. You can use NPM, YARN or PNPM too...)
+## Contributing
 
-## How to contact me?
+> [!IMPORTANT]
+> If you have any ideas or issues, you are free to open GitHub issue or a PR.
+> If you like this repo consider giving it a ⭐. Thank you for your time.
 
-If you find any issues and/or want to contact me directly:
+## Shout outs
 
-- [Discord](https://discord.com/users/souvlaki42)
-- [Twitter](https://twitter.com/souvlaki42)
-- [Email](mailto:souvlaki420@gmail.com)
+The places where useful knowledge and inspiration came from for this project
+
+- [Lyxcode's DiscordJS V14 Series](https://www.youtube.com/playlist?list=PLQfxpktrTzhJ4WmZDOTIee3JPVq16DZkX)
+- [Freestuff bot](https://freestuffbot.xyz/)
