@@ -4,7 +4,9 @@ import {
   Collection,
   type RestEvents,
 } from "discord.js";
-import { type Event, type EventName, logger, Table } from "~/lib/utils";
+import { logger } from "~/lib/logger";
+import { Table } from "~/lib/table";
+import type { Event, EventName } from "~/lib/utils";
 
 const isRestEvent = (_: EventName, rest: boolean): _ is keyof RestEvents =>
   rest;

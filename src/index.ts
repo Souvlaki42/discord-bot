@@ -1,7 +1,8 @@
 import { Client, GatewayIntentBits, Partials } from "discord.js";
 import { loadCommands } from "~/handlers/commands";
 import { loadEvents } from "~/handlers/events";
-import { env, logger } from "~/lib/utils";
+import { logger } from "~/lib/logger";
+import { env } from "~/lib/utils";
 
 export const client = new Client({
   intents: [

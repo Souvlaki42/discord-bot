@@ -4,7 +4,9 @@ import {
   Client,
   Collection,
 } from "discord.js";
-import { logger, Table, type Command } from "~/lib/utils";
+import { logger } from "~/lib/logger";
+import { Table } from "~/lib/table";
+import type { Command } from "~/lib/utils";
 
 export async function loadCommands(client: Client) {
   const commandsTable = new Table("Commands", 15);

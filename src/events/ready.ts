@@ -1,4 +1,5 @@
-import { type Event, logger } from "~/lib/utils";
+import { logger } from "~/lib/logger";
+import type { Event } from "~/lib/utils";
 
 export default {
   name: "ready",
