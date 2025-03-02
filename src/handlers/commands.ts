@@ -93,7 +93,14 @@ export async function handleChatInputCommands(
   try {
     await command.execute(interaction);
   } catch (error) {
-    logger.error(error);
+    if (error instanceof Error) logger.error(error);
+    else
+      logger.error("Command couldn't be handled", {
+        action: "command",
+        name: command.displayName,
+        category: command.category,
+        handler: command.execute,
+      });
     return await interaction.reply({
       content: "Something went wrong. Please try again later.",
       ephemeral: true,

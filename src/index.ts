@@ -44,6 +44,10 @@ try {
   await loadEvents(client);
   await loadCommands(client);
 } catch (error) {
-  logger.error(error);
+  if (error instanceof Error) logger.error(error);
+  else
+    logger.error("Failure was inevitable", {
+      error,
+    });
   process.exit(1);
 }
