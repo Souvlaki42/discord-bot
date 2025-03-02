@@ -3,6 +3,7 @@ import {
   ChatInputCommandInteraction,
   Client,
   Collection,
+  MessageFlags,
 } from "discord.js";
 import { logger } from "~/lib/logger";
 import { Table } from "~/lib/table";
@@ -52,9 +53,9 @@ export async function loadCommands(client: Client) {
 export async function handleButtonInteractions(interaction: ButtonInteraction) {
   await interaction.reply({
     content: "There is no button interactions yet.",
-    ephemeral: true,
+    flags: MessageFlags.Ephemeral,
   });
-  logger.warn("Button interactions unavailable", {
+  logger.warning("Button interactions unavailable", {
     action: "button",
     context: interaction.context,
   });
@@ -71,10 +72,10 @@ export async function handleChatInputCommands(
   });
 
   if (!command) {
-    commandLogger.warn("Outdated command");
+    commandLogger.warning("Outdated command");
     return await interaction.reply({
       content: "The command you specified is propably outdated.",
-      ephemeral: true,
+      flags: MessageFlags.Ephemeral,
     });
   }
 
@@ -83,10 +84,10 @@ export async function handleChatInputCommands(
   );
 
   if (!interactionUser) {
-    commandLogger.warn("Cannot execute", { user_id: interaction.user.id });
+    commandLogger.warning("Cannot execute", { user_id: interaction.user.id });
     return await interaction.reply({
       content: "You cannot execute commands here.",
-      ephemeral: true,
+      flags: MessageFlags.Ephemeral,
     });
   }
 
@@ -103,7 +104,7 @@ export async function handleChatInputCommands(
       });
     return await interaction.reply({
       content: "Something went wrong. Please try again later.",
-      ephemeral: true,
+      flags: MessageFlags.Ephemeral,
     });
   }
 }

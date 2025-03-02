@@ -1,4 +1,9 @@
-import { Colors, PermissionFlagsBits, SlashCommandBuilder } from "discord.js";
+import {
+  Colors,
+  MessageFlags,
+  PermissionFlagsBits,
+  SlashCommandBuilder,
+} from "discord.js";
 import { logger } from "~/lib/logger";
 import { type Command, embed } from "~/lib/utils";
 
@@ -32,26 +37,26 @@ export default {
     });
 
     if (!target || !member) {
-      kickLogger.warn("Target no longer in server");
+      kickLogger.warning("Target no longer in server");
       return await interaction.reply({
         content: "The user you selected is no longer a member of this server.",
-        ephemeral: true,
+        flags: MessageFlags.Ephemeral,
       });
     }
 
     if (interaction.user.id === target.id) {
-      kickLogger.warn("User tried to kick themselves");
+      kickLogger.warning("User tried to kick themselves");
       return await interaction.reply({
         content: "You cannot kick yourself.",
-        ephemeral: true,
+        flags: MessageFlags.Ephemeral,
       });
     }
 
     if (!member.kickable) {
-      kickLogger.warn("Target has more permissions");
+      kickLogger.warning("Target has more permissions");
       return await interaction.reply({
         content: "The user you selected has permissions above us.",
-        ephemeral: true,
+        flags: MessageFlags.Ephemeral,
       });
     }
 

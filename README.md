@@ -11,7 +11,7 @@ A type-safe discord bot template built using Discord.js v14, Typescript and Bun.
 
 ## TODO
 
-- [ ] Fix ephemeral warnings
+- [x] Fix ephemeral warnings
 - [ ] Add more commands
 - [ ] Make a docker compose file
 - [ ] Add a sqlite database

@@ -1,4 +1,4 @@
-import { SlashCommandBuilder } from "discord.js";
+import { MessageFlags, SlashCommandBuilder } from "discord.js";
 import { type Command } from "~/lib/utils";
 
 export default {
@@ -12,7 +12,7 @@ export default {
     const apiLatency = interaction.client.ws.ping;
     return await interaction.reply({
       content: `🏓 Latency is ${latency}ms. API Latency is ${apiLatency}ms`,
-      ephemeral: true,
+      flags: MessageFlags.Ephemeral,
     });
   },
 } satisfies Command;

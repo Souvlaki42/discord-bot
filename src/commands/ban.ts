@@ -1,4 +1,9 @@
-import { Colors, PermissionFlagsBits, SlashCommandBuilder } from "discord.js";
+import {
+  Colors,
+  MessageFlags,
+  PermissionFlagsBits,
+  SlashCommandBuilder,
+} from "discord.js";
 import { logger } from "~/lib/logger";
 import { type Command, embed } from "~/lib/utils";
 
@@ -32,26 +37,26 @@ export default {
     });
 
     if (!target || !member) {
-      banLogger.warn("Target specified no longer in the server");
+      banLogger.warning("Target specified no longer in the server");
       return await interaction.reply({
         content: "The user you selected is no longer a member of this server.",
-        ephemeral: true,
+        flags: MessageFlags.Ephemeral,
       });
     }
 
     if (interaction.user.id === target.id) {
-      banLogger.warn("User tried to ban themselves");
+      banLogger.warning("User tried to ban themselves");
       return await interaction.reply({
         content: "You cannot ban yourself.",
-        ephemeral: true,
+        flags: MessageFlags.Ephemeral,
       });
     }
 
     if (!member.bannable) {
-      banLogger.warn("User tried banning an admin");
+      banLogger.warning("User tried banning an admin");
       return await interaction.reply({
         content: "The user you selected has permissions above us.",
-        ephemeral: true,
+        flags: MessageFlags.Ephemeral,
       });
     }
 
