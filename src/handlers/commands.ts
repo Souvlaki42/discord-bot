@@ -54,36 +54,46 @@ export async function handleButtonInteractions(interaction: ButtonInteraction) {
     content: "There is no button interactions yet.",
     ephemeral: true,
   });
+  logger.warn("Button interactions unavailable", {
+    action: "button",
+    context: interaction.context,
+  });
 }
 
 export async function handleChatInputCommands(
   interaction: ChatInputCommandInteraction
 ) {
   const command = interaction.client.commands.get(interaction.commandName);
+  const commandLogger = logger.child({
+    action: "command",
+    context: interaction.context,
+    command,
+  });
 
-  if (!command)
+  if (!command) {
+    commandLogger.warn("Outdated command");
     return await interaction.reply({
       content: "The command you specified is propably outdated.",
       ephemeral: true,
     });
+  }
 
   const interactionUser = interaction.guild?.members.cache.get(
     interaction.user.id
   );
 
-  if (!interactionUser)
+  if (!interactionUser) {
+    commandLogger.warn("Cannot execute", { user_id: interaction.user.id });
     return await interaction.reply({
       content: "You cannot execute commands here.",
       ephemeral: true,
     });
+  }
 
   try {
     await command.execute(interaction);
   } catch (error) {
-    logger.error(`
-    Error: ${JSON.stringify(error)}\n
-    Info: ${JSON.stringify(command.builder.toJSON())}
-    `);
+    logger.error(error);
     return await interaction.reply({
       content: "Something went wrong. Please try again later.",
       ephemeral: true,

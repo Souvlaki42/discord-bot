@@ -1,4 +1,5 @@
 import { Colors, PermissionFlagsBits, SlashCommandBuilder } from "discord.js";
+import { logger } from "~/lib/logger";
 import { type Command, embed } from "~/lib/utils";
 
 export default {
@@ -24,24 +25,35 @@ export default {
     const reason =
       interaction.options.getString("reason") ?? "No reason specified.";
     const member = await interaction.guild?.members.fetch(target?.id || "");
+    const kickLogger = logger.child({
+      action: "kick",
+      user_id: interaction.user.id,
+      target_id: target?.id,
+    });
 
-    if (!target || !member)
+    if (!target || !member) {
+      kickLogger.warn("Target no longer in server");
       return await interaction.reply({
         content: "The user you selected is no longer a member of this server.",
         ephemeral: true,
       });
+    }
 
-    if (interaction.user.id === target.id)
+    if (interaction.user.id === target.id) {
+      kickLogger.warn("User tried to kick themselves");
       return await interaction.reply({
         content: "You cannot kick yourself.",
         ephemeral: true,
       });
+    }
 
-    if (!member.kickable)
+    if (!member.kickable) {
+      kickLogger.warn("Target has more permissions");
       return await interaction.reply({
         content: "The user you selected has permissions above us.",
         ephemeral: true,
       });
+    }
 
     const dmEmbed = embed(
       "Kick",

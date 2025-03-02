@@ -1,4 +1,5 @@
 import { Colors, PermissionFlagsBits, SlashCommandBuilder } from "discord.js";
+import { logger } from "~/lib/logger";
 import { type Command, embed } from "~/lib/utils";
 
 export default {
@@ -24,24 +25,35 @@ export default {
     const reason =
       interaction.options.getString("reason") ?? "No reason specified.";
     const member = await interaction.guild?.members.fetch(target?.id || "");
+    const banLogger = logger.child({
+      action: "ban",
+      user_id: interaction.user.id,
+      target_id: target?.id,
+    });
 
-    if (!target || !member)
+    if (!target || !member) {
+      banLogger.warn("Target specified no longer in the server");
       return await interaction.reply({
         content: "The user you selected is no longer a member of this server.",
         ephemeral: true,
       });
+    }
 
-    if (interaction.user.id === target.id)
+    if (interaction.user.id === target.id) {
+      banLogger.warn("User tried to ban themselves");
       return await interaction.reply({
         content: "You cannot ban yourself.",
         ephemeral: true,
       });
+    }
 
-    if (!member.bannable)
+    if (!member.bannable) {
+      banLogger.warn("User tried banning an admin");
       return await interaction.reply({
         content: "The user you selected has permissions above us.",
         ephemeral: true,
       });
+    }
 
     const dmEmbed = embed(
       "Ban",

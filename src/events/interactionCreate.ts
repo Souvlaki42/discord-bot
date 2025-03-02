@@ -17,11 +17,13 @@ export default {
     else if (interaction.isButton())
       await handleButtonInteractions(interaction);
     else {
-      const error = "This interaction is not available.";
       if (interaction.channel?.isSendable()) {
-        interaction.channel.send(error);
+        interaction.channel.send("This interaction is not available.");
       }
-      logger.error(error);
+      logger.error("Interaction unavailable", {
+        action: "interaction",
+        context: interaction.context,
+      });
     }
   },
 } satisfies Event<"interactionCreate">;
