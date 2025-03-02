@@ -4,8 +4,9 @@
   "scripts": {
     "dev": "bun --watch src/index.ts",
     "debug": "bun --inspect src/index.ts",
-    "start": "bun src/index.ts",
-    "pretty": "prettier --write \"src/**/*.{js,jsx,ts,tsx,json,css,scss,md}\""
+    "start": "bun dist/index.js",
+    "pretty": "prettier --write \"src/**/*.{js,jsx,ts,tsx,json,css,scss,md}\"",
+    "build": "bun build --entrypoints ./src/index.ts --outdir ./dist --target bun"
   },
   "type": "module",
   "dependencies": {
