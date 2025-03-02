@@ -15,7 +15,8 @@ export async function loadCommands(client: Client) {
   if (!client.commands) client.commands = new Collection();
   client.commands.clear();
 
-  if (!client.application) return;
+  if (!client.application)
+    return logger.error("Undefined client", { action: "command" });
   client.application.commands.cache.clear();
 
   const glob = new Bun.Glob("**/*.ts");
