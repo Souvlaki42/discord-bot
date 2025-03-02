@@ -20,10 +20,24 @@ export const client = new Client({
   ],
 });
 
-// process.on("SIGINT", () => {
-//   logger.info("Bot's execution was terminated gracefully.");
-//   process.exit(0);
-// });
+async function gracefulShutdown(signal: NodeJS.Signals): Promise<void> {
+  console.log(`Received ${signal}. Shutting down gracefully...`);
+  try {
+    console.log("Disconnecting from Discord...");
+    await client.destroy();
+    console.log("Disconnected from Discord.");
+    console.log("Cleanup tasks complete.");
+    console.log("Shutdown complete. Exiting.");
+    process.exit(0);
+  } catch (error) {
+    console.error("Error during shutdown:", error);
+    process.exit(1);
+  }
+}
+
+process.on("SIGINT", gracefulShutdown); // Ctrl+C
+process.on("SIGTERM", gracefulShutdown); // Termination signal (e.g., from Docker)
+process.on("SIGUSR2", gracefulShutdown); // Nodemon restart signal
 
 try {
   await client.login(env.TOKEN);
